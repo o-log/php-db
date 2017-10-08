@@ -8,6 +8,10 @@ class Space
     protected $connector_id = '';
     protected $sql_file_path_in_project_root;
 
+    function getSqlFilePathInProjectRoot() {
+        return $this->sql_file_path_in_project_root;
+    }
+
     public function __construct($connector_id, $sql_file_path_in_project_root = '')
     {
         $this->connector_id = $connector_id;
@@ -17,6 +21,7 @@ class Space
     public function query($query, $params_arr = array())
     {
         $connector = DBConfig::connector($this->connector_id);
+        return $connector->query($query, $params_arr);
     }
 
     public function lastInsertId($db_sequence_name)

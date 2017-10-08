@@ -26,10 +26,6 @@ class Connector
 
     public function query($query, $params_arr = array())
     {
-        if (!$this->pdo_is_connected){
-            throw new \Exception('Not connected');
-        }
-        
         try {
             $statement_obj = $this->pdo()->prepare($query);
 

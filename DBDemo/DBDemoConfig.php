@@ -11,7 +11,7 @@ class DBDemoConfig {
     const SPACE = 'SPACE';
     
     static public function init(){
-        DBConfig::setConnector(self::CONNECTOR, new Connector('localhost', 'dbdemo', 'root', '1234'));
-        DBConfig::setSpace(self::SPACE, new Space(self::CONNECTOR, __FILE__ . '/../migrations'));
+        DBConfig::setConnector(self::CONNECTOR, new Connector('127.0.0.1', 'dbdemo', 'root', '1234'));
+        DBConfig::setSpace(self::SPACE, new Space(self::CONNECTOR, 'migrations.sql'));
     }
 }
