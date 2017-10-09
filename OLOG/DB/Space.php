@@ -26,26 +26,31 @@ class Space
 
     public function lastInsertId($db_sequence_name)
     {
-        return $this->getPdoObj()->lastInsertId($db_sequence_name);
+        $connector = DBConfig::connector($this->connector_id);
+        return $connector->lastInsertId($db_sequence_name);
     }
 
     public function inTransaction()
     {
-        return $this->getPdoObj()->inTransaction();
+        $connector = DBConfig::connector($this->connector_id);
+        return $connector->inTransaction();
     }
 
     public function beginTransaction()
     {
-        return $this->getPdoObj()->beginTransaction();
+        $connector = DBConfig::connector($this->connector_id);
+        return $connector->beginTransaction();
     }
 
     public function commit()
     {
-        $this->getPdoObj()->commit();
+        $connector = DBConfig::connector($this->connector_id);
+        $connector->commit();
     }
 
     public function rollBack()
     {
-        $this->getPdoObj()->rollBack();
+        $connector = DBConfig::connector($this->connector_id);
+        $connector->rollBack();
     }
 }

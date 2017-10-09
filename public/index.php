@@ -5,7 +5,6 @@ require_once '../vendor/autoload.php';
 \DBDemo\DBDemoConfig::init();
 
 echo '<h1>DB test</h1>';
-echo '<hr/>';
 
 echo '<div><a href="/">reload</a></div>';
 
