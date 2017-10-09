@@ -9,7 +9,7 @@ class DBConfig {
     static protected $spaces = [];
     static protected $connectors = [];
 
-    static public function setConnector($connector_id, Connector $connector) {
+    static public function setConnector($connector_id, ConnectorMySQL $connector) {
         self::$connectors[$connector_id] = $connector;
     }
 
