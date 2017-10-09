@@ -87,9 +87,10 @@ class Connector
             return $this->pdo;
         }
 
-        $pdo_obj = new \PDO('mysql:host=' . $this->getServerHost() . ';dbname=' . $this->getDbName() . ';charset=utf8', $this->getUser(), $this->getPassword());
-        $pdo_obj->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->setPdo($pdo_obj);
+        $pdo = new \PDO('mysql:host=' . $this->getServerHost() . ';dbname=' . $this->getDbName() . ';charset=utf8', $this->getUser(), $this->getPassword());
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false); // to use ? for limit and offset values
+        $this->setPdo($pdo);
         $this->setPdoIsConnected(true);
 
         return $this->pdo;
