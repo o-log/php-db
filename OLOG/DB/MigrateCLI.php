@@ -2,7 +2,7 @@
 
 namespace OLOG\DB;
 
-class CLI
+class MigrateCLI
 {
     const EXECUTED_QUERIES_TABLE_NAME = '_olog_phpdb_migrations';
 
