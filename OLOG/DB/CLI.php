@@ -2,11 +2,11 @@
 
 namespace OLOG\DB;
 
-class CLIExecuteSql
+class CLI
 {
     const EXECUTED_QUERIES_TABLE_NAME = '_olog_phpdb_migrations';
 
-    static public function executeSqlScreen()
+    static public function run()
     {
         $spaces = DBConfig::spaces();
         if (empty($spaces)){
