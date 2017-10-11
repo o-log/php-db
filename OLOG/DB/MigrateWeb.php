@@ -41,7 +41,7 @@ class MigrateWeb
             $db_id = POST::required(self::INPUT_NAME_DB_ID);
 
             self::renderLine("Executing: " . $sql);
-            \OLOG\DB\Migrate::executeQuery($db_id, $sql);
+            \OLOG\DB\Migrate::executeMigration($db_id, $sql);
             self::renderLine("Query executed.");
         });
 
@@ -55,11 +55,11 @@ class MigrateWeb
         foreach ($db_arr as $db_id => $db_config) {
             self::renderLine("Database ID in application config: " . $db_id);
 
-            self::process_db($db_id, $project_root_path_in_filesystem);
+            self::processSpace($db_id, $project_root_path_in_filesystem);
         }
     }
 
-    protected static function process_db($db_id, $project_root_path_in_filesystem)
+    protected static function processSpace($db_id, $project_root_path_in_filesystem)
     {
         // checking DB connectivity
         $db_obj = null;

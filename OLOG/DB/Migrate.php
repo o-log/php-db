@@ -9,7 +9,12 @@ class Migrate {
 
     const EXECUTED_QUERIES_TABLE_NAME = '_olog_phpdb_migrations';
 
-    static public function executeQuery($space_id, $sql) {
+    static public function executeMigration($space_id, $sql) {
+        // ignore empty migrations
+        if ($sql == ''){
+            return;
+        }
+        
         DB::query($space_id, $sql);
 
         DB::query(
@@ -23,7 +28,7 @@ class Migrate {
         );
     }
 
-    static public function getSqlFileNameForDB($space_id, $project_root_path_in_filesystem = '') {
+    static public function migrationsFileName($space_id, $project_root_path_in_filesystem = '') {
         if ($project_root_path_in_filesystem == '') {
             // detect path if not passed
             $project_root_path_in_filesystem = getcwd() . DIRECTORY_SEPARATOR;
@@ -37,55 +42,73 @@ class Migrate {
         return $filename;
     }
 
-    static public function loadSqlArrForDB($space_id, $project_root_path_in_filesystem = '') {
-        $filename = self::getSqlFileNameForDB($space_id, $project_root_path_in_filesystem);
+    static public function executedMigrations($space_id){
+        $executed_queries_sql_arr = [];
+        
+        try {
+            $executed_queries_sql_arr = DB::readColumn(
+                $space_id,
+                'select sql_query from ' . Migrate::EXECUTED_QUERIES_TABLE_NAME
+            );
+        } catch (\Exception $e) {
+            //echo CLIUtil::delimiter();
+            //echo "Can not load the executed queries list from " . Migrate::EXECUTED_QUERIES_TABLE_NAME . " table:\n";
+            //echo $e->getMessage() . "\n\n";
+
+            //echo "Probably the " . Migrate::EXECUTED_QUERIES_TABLE_NAME . " table was not created, creating\n";
+            Migrate::createMigrationsTable($space_id);
+        }
+
+        return $executed_queries_sql_arr;
+    }
+    
+    static public function allMigrations($space_id, $project_root_path_in_filesystem = '') {
+        $filename = self::migrationsFileName($space_id, $project_root_path_in_filesystem);
 
         if (!file_exists($filename)) {
-            echo "Не найден файл SQL запросов для БД " . $space_id . ": " . $filename . "\n";
-            echo "Введите 1 чтобы создать файл SQL запросов, ENTER для выхода:\n";
-
-            $command_str = trim(fgets(STDIN));
-
-            if ($command_str == '1') {
-                // TODO: check errors
-                file_put_contents($filename, var_export([], true));
-            } else {
-                exit;
-            }
+            throw new Exception('Migrations file "' . $filename . '" not found');
         }
 
         // TODO: must open file from current project root
-        $sql_file_str = file_get_contents($filename); // TODO: better errors check?
-        if ($sql_file_str == '') {
-            throw new \Exception('SQL queries file doesnt exist or empty.');
-        }
+        $sql_file_str = file_get_contents($filename); // TODO: errors check
 
-        $sql_arr = array();
-        eval('$sql_arr = ' . $sql_file_str . ';');
-        ksort($sql_arr);
+        $sql_arr = preg_split('/$\R?^/m', $sql_file_str);
 
         return $sql_arr;
     }
 
-    static public function addSqlToRegistry($db_name, $sql_str) {
-        $sql_arr = self::loadSqlArrForDB($db_name);
+    static public function executeMigrations($space_id, $project_root_path_in_filesystem = '') {
+        $migrations = self::newMigrations($space_id, $project_root_path_in_filesystem);
+        foreach ($migrations as $sql){
+            Migrate::executeMigration($space_id, $sql);
+        }
+    }
+
+    static public function newMigrations($space_id, $project_root_path_in_filesystem = '') {
+        $executed_sql = Migrate::executedMigrations($space_id);
+
+        $sql_arr = Migrate::allMigrations($space_id);
+
+        $new_migrations = [];
+        
+        foreach ($sql_arr as $sql) {
+            if (!in_array($sql, $executed_sql)) {
+                $new_migrations[] = $sql;
+            }
+        }
+        
+        return $new_migrations;
+    }
+
+    static public function addMigration($space_id, $sql_str) {
+        $sql_arr = self::allMigrations($space_id);
 
         $sql_arr[] = $sql_str;
 
-        //$exported_arr = var_export($sql_arr, true);
-        // не используется var_export, потому что он сохраняет массив с индексами, а индексы могут конфликтовать при мерже если несколько разработчиков одновременно добавляют запросы
-
-        $exported_arr = "array(\n";
-        foreach ($sql_arr as $sql_str) {
-            $sql_str = str_replace('\'', '\\\'', $sql_str);
-            $exported_arr .= '\'' . $sql_str . '\',' . "\n";
-        }
-        $exported_arr .= ")\n";
-
-        $filename = self::getSqlFileNameForDB($db_name);
+        $filename = self::migrationsFileName($space_id);
 
         // TODO: check errors
-        file_put_contents($filename, $exported_arr);
+        file_put_contents($filename, implode("\n", $sql_arr));
     }
 
 }

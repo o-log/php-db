@@ -15,7 +15,7 @@ class DBConfig {
 
     static public function connector($connector_id) {
         if (!array_key_exists($connector_id, self::$connectors)) {
-            throw new \Exception();
+            throw new \Exception('Connector "' . $connector_id . '" not found');
         }
 
         return self::$connectors[$connector_id];

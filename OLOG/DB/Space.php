@@ -12,7 +12,7 @@ class Space
         return $this->sql_file_path_in_project_root;
     }
 
-    public function __construct($connector_id, $sql_file_path_in_project_root = '')
+    public function __construct($connector_id, $sql_file_path_in_project_root)
     {
         $this->connector_id = $connector_id;
         $this->sql_file_path_in_project_root = $sql_file_path_in_project_root;
