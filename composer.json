@@ -12,8 +12,7 @@
   ],
   "require": {
     "o-log/php-router": "2.*",
-    "o-log/php-message": "0.*",
-    "predis/predis": "1.*"
+    "o-log/php-message": "0.*"
   },
   "autoload": {
     "psr-0": {
