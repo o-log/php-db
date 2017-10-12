@@ -72,7 +72,7 @@ class Migrate {
         // TODO: must open file from current project root
         $sql_file_str = file_get_contents($filename); // TODO: errors check
 
-        $sql_arr = preg_split('/$\R?^/m', $sql_file_str);
+        $sql_arr = preg_split('/\R/', $sql_file_str, -1, PREG_SPLIT_NO_EMPTY );
 
         return $sql_arr;
     }
