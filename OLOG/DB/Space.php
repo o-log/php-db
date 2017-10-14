@@ -1,7 +1,6 @@
 <?php
 
 namespace OLOG\DB;
-use OLOG\Assert;
 
 class Space
 {
@@ -12,13 +11,13 @@ class Space
         return $this->sql_file_path_in_project_root;
     }
 
-    public function __construct($connector_id, $sql_file_path_in_project_root)
+    public function __construct(string $connector_id, string $sql_file_path_in_project_root)
     {
         $this->connector_id = $connector_id;
         $this->sql_file_path_in_project_root = $sql_file_path_in_project_root;
     }
 
-    public function query($query, $params_arr = array())
+    public function query(string $query, $params_arr = array()): \PDOStatement
     {
         $connector = DBConfig::connector($this->connector_id);
         return $connector->query($query, $params_arr);
@@ -45,12 +44,12 @@ class Space
     public function commit()
     {
         $connector = DBConfig::connector($this->connector_id);
-        $connector->commit();
+        return $connector->commit();
     }
 
     public function rollBack()
     {
         $connector = DBConfig::connector($this->connector_id);
-        $connector->rollBack();
+        return $connector->rollBack();
     }
 }

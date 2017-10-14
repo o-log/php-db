@@ -66,7 +66,7 @@ class Migrate {
         $filename = self::migrationsFileName($space_id, $project_root_path_in_filesystem);
 
         if (!file_exists($filename)) {
-            throw new Exception('Migrations file "' . $filename . '" not found');
+            throw new \Exception('Migrations file "' . $filename . '" not found');
         }
 
         // TODO: must open file from current project root

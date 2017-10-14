@@ -2,8 +2,6 @@
 
 namespace OLOG\DB;
 
-use OLOG\Assert;
-
 class DBConfig {
 
     static protected $spaces = [];

@@ -2,8 +2,6 @@
 
 namespace OLOG\DB;
 
-use OLOG\DB\Migrate;
-
 class MigrateCLI
 {
     static public function run()
@@ -22,7 +20,7 @@ class MigrateCLI
 
     static public function connectOrExit($space_id){
         try {
-            $check = DB::readColumn(
+            DB::readColumn(
                 $space_id,
                 'select "1"'
             );
