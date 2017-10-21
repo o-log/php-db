@@ -7,7 +7,7 @@ if (file_exists($project_autoload)) {
     require_once $project_autoload;
 } else {
     // when file in project_folder/vendor/o-log/bin
-    $vendor_autoload = __DIR__ . '/../../../vendor/autoload.php';
+    $vendor_autoload = __DIR__ . '/../../../../vendor/autoload.php';
     require_once $vendor_autoload;
 }
 
