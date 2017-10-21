@@ -5,16 +5,16 @@ namespace OLOG\DB;
 class Space
 {
     protected $connector_id = '';
-    protected $sql_file_path_in_project_root;
+    protected $sql_file_full_path;
 
-    function getSqlFilePathInProjectRoot() {
-        return $this->sql_file_path_in_project_root;
+    function getSqlFileFullPath() {
+        return $this->sql_file_full_path;
     }
 
-    public function __construct(string $connector_id, string $sql_file_path_in_project_root)
+    public function __construct(string $connector_id, string $sql_file_full_path)
     {
         $this->connector_id = $connector_id;
-        $this->sql_file_path_in_project_root = $sql_file_path_in_project_root;
+        $this->sql_file_full_path = $sql_file_full_path;
     }
 
     public function query(string $query, $params_arr = array()): \PDOStatement

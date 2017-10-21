@@ -12,6 +12,6 @@ class DBDemoConfig {
     
     static public function init(){
         DBConfig::setConnector(self::CONNECTOR_DBDEMO, new ConnectorMySQL('127.0.0.1', 'dbdemo', 'root', '1234'));
-        DBConfig::setSpace(self::SPACE_DBDEMO, new Space(self::CONNECTOR_DBDEMO, 'dbdemo.sql'));
+        DBConfig::setSpace(self::SPACE_DBDEMO, new Space(self::CONNECTOR_DBDEMO, __DIR__ . '/../dbdemo.sql'));
     }
 }

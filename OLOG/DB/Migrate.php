@@ -28,16 +28,11 @@ class Migrate {
         );
     }
 
-    static public function migrationsFileName($space_id, $project_root_path_in_filesystem = '') {
-        if ($project_root_path_in_filesystem == '') {
-            // detect path if not passed
-            $project_root_path_in_filesystem = getcwd() . DIRECTORY_SEPARATOR;
-        }
-
+    static public function migrationsFileName($space_id) {
         $space = DBConfig::space($space_id);
-        $db_config_sql_file = $space->getSqlFilePathInProjectRoot();
+        $db_config_sql_file = $space->getSqlFileFullPath();
 
-        $filename = $project_root_path_in_filesystem . $db_config_sql_file;
+        $filename = $db_config_sql_file;
 
         return $filename;
     }
@@ -62,8 +57,8 @@ class Migrate {
         return $executed_queries_sql_arr;
     }
     
-    static public function allMigrations($space_id, $project_root_path_in_filesystem = '') {
-        $filename = self::migrationsFileName($space_id, $project_root_path_in_filesystem);
+    static public function allMigrations($space_id) {
+        $filename = self::migrationsFileName($space_id);
 
         if (!file_exists($filename)) {
             throw new \Exception('Migrations file "' . $filename . '" not found');
@@ -77,14 +72,14 @@ class Migrate {
         return $sql_arr;
     }
 
-    static public function executeMigrations($space_id, $project_root_path_in_filesystem = '') {
-        $migrations = self::newMigrations($space_id, $project_root_path_in_filesystem);
+    static public function executeMigrations($space_id) {
+        $migrations = self::newMigrations($space_id);
         foreach ($migrations as $sql){
             Migrate::executeMigration($space_id, $sql);
         }
     }
 
-    static public function newMigrations($space_id, $project_root_path_in_filesystem = '') {
+    static public function newMigrations($space_id) {
         $executed_sql = Migrate::executedMigrations($space_id);
 
         $sql_arr = Migrate::allMigrations($space_id);
