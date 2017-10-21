@@ -4,7 +4,7 @@ namespace OLOG\DB;
 
 class MigrateCLI
 {
-    static public function run($project_root_path_in_filesystem = '')
+    static public function run()
     {
         $spaces = DBConfig::spaces();
         if (empty($spaces)){
@@ -14,7 +14,7 @@ class MigrateCLI
 
         foreach ($spaces as $space_id => $space) {
             echo "Space: " . $space_id . "\n";
-            self::processSpace($space_id, $project_root_path_in_filesystem);
+            self::processSpace($space_id);
         }
     }
 
@@ -31,13 +31,13 @@ class MigrateCLI
         }
     }
     
-    static public function processSpace($space_id, $project_root_path_in_filesystem = '')
+    static public function processSpace($space_id)
     {
         self::connectOrExit($space_id); // checking DB connectivity
 
         // executeMigrations not used to echo migrations
         
-        $sqls = Migrate::newMigrations($space_id, $project_root_path_in_filesystem);
+        $sqls = Migrate::newMigrations($space_id);
         foreach ($sqls as $sql){
             echo $sql . "\n";
             Migrate::executeMigration($space_id, $sql);

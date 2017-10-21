@@ -8,11 +8,16 @@
     "phpunit/phpunit": "5.5.*",
     "o-log/php-router": "2.*"
   },
-  "autoload": {
+  "autoload-dev": {
     "psr-0": {
-      "OLOG": "",
+      "Config": "",
       "DBDemo": "",
       "Tests": ""
+    }
+  },
+  "autoload": {
+    "psr-0": {
+      "OLOG": ""
     }
   }
 }

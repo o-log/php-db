@@ -10,9 +10,9 @@ class MigrationsTest extends \PHPUnit_Framework_TestCase {
     const MIGRATIONS_FILENAME = 'tests.sql';
     
     public function testMigrations(){
-        DBDemo\DBDemoConfig::init();
+        \Config\Config::init();
         
-        DBConfig::setSpace(self::SPACE_TESTS, new Space(DBDemo\DBDemoConfig::CONNECTOR_DBDEMO, self::MIGRATIONS_FILENAME));
+        DBConfig::setSpace(self::SPACE_TESTS, new Space(\Config\Config::CONNECTOR_DBDEMO, self::MIGRATIONS_FILENAME));
 
         //
         // erase existing test migrations file or create new one
