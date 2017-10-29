@@ -26,7 +26,7 @@ The space is a set of tables, which are located in the same database and used to
 
 Space are assigned to connections in the application config. All spaces may share the same connection, or be located in different databases and on different database servers.
 
-Sonnector and space configuration example:
+Connector and space configuration example:
 
     class Config
     {
@@ -52,11 +52,11 @@ The configuration may be applied in the entry point like this:
     
 # Migrations
 
-Migrations are performed by bin/migrate tool. It is installed to vendor/bin/migrate in applications.
+Migrations are performed by vendor/bin/migrate tool.
 
-All migrations for a space are stored in a single file, on sql query per line. Migrations file name is passed to space configuration.   
+All migrations for a space are stored in a single file, one sql query per line. Migrations file name is passed to space configuration.   
 
-The queries are executed in the order the which the have in the file. You can use php-model utilites to create migrations, or write migrations manually.
+The queries are executed in the order they have in the file. You can use php-model utilites to create migrations, or write migrations manually.
 
 # Transactions
 
