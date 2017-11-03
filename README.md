@@ -1,10 +1,20 @@
+The library major features are:
+
+- migrations manager with CLI, web and program interface
+
+- lightweight wrapper around PDO with automatic connection to server
+
+- concept of table spaces and connectors, which allows composing application from several modules or services  
+
+# Working with database data
+
 Database connection will be established automatically when performing first query. Thus majority of pages is generated without connecting to database at all -  all data comes from cache.
 
 Basic database methods are located in DB class: 
 
     static public function readColumn($db_id, $query, $params_arr = array())
 
-Used to read values from single column to array.
+Reads values from single column to array.
 
     static public function query($space_id, $query, $params_arr = array())
     
@@ -12,7 +22,7 @@ Executes query and returns PDO statement obj. Can be used for non-select queries
 
     static public function readObject($db_name, $query, $params_arr = array())
    
-Used to read single database record to stdClass object. 
+Reads single database record to stdClass object. 
     
     static public function readObjects($space_id, $query, $params_arr = array(), $field_name_for_keys = '')
 
@@ -22,9 +32,9 @@ Every method receives database space name, query string with parameter placehold
 
 # Connectors and spaces
 
-The space is a set of tables, which are located in the same database and used together. Every module has it's own table space. For example, php-auth module uses SPACE_PHPAUTH.
+The space is a set of tables, which are located in the same database and used together. Application may consist of several modules, each of them has it's own table space. For example, php-auth module uses SPACE_PHPAUTH.
 
-Space are assigned to connections in the application config. All spaces may share the same connection, or be located in different databases and on different database servers.
+Space are assigned to database connections in the application config. All spaces may share the same connection, or be located in different databases and on different database servers.
 
 Connector and space configuration example:
 
@@ -72,6 +82,5 @@ Every module, which works with the database, has it's own table space id and mig
 
         DBConfig::setSpace(AuthConfig::SPACE_PHPAUTH, new Space(self::CONNECTOR_DEMO, __DIR__ . '/../vendor/o-log/php-auth/db_phpauth.sql'));
         DBConfig::setSpace(StorageConstants::SPACE_PHPSTORAGE, new Space(self::CONNECTOR_DEMO, __DIR__ . '/../db_phpstorage.sql'));
-
 
 You must register module spaces before the application spaces, thus migrator can first create module tables and after that create applications tables, which may reference the module tables.
