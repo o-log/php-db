@@ -1,10 +1,12 @@
 The library major features are:
 
-- migrations manager with CLI, web and program interface
+- migrations engine with CLI, web and program interface
+
+- "table spaces" allows having multiple databases per application, and also lets composer modules use database and have migrations
+
+- connectors and table spaces are declared and configured separately, which helps easily override database configuration
 
 - lightweight wrapper around PDO with automatic connection to server
-
-- concept of table spaces and connectors, which allows composing application from several modules or services  
 
 # Working with database data
 
@@ -12,7 +14,7 @@ Database connection will be established automatically when performing first quer
 
 Basic database methods are located in DB class: 
 
-    static public function readColumn($db_id, $query, $params_arr = array())
+    static public function readColumn($space_id, $query, $params_arr = array())
 
 Reads values from single column to array.
 
@@ -20,7 +22,7 @@ Reads values from single column to array.
     
 Executes query and returns PDO statement obj. Can be used for non-select queries (insert, update, etc.).    
 
-    static public function readObject($db_name, $query, $params_arr = array())
+    static public function readObject($space_id, $query, $params_arr = array())
    
 Reads single database record to stdClass object. 
     
