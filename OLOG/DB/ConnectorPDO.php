@@ -2,7 +2,7 @@
 
 namespace OLOG\DB;
 
-class ConnectorPDO
+class ConnectorPDO implements ConnectorInterface
 {
     protected $server_host;
     protected $db_name;
@@ -50,7 +50,7 @@ class ConnectorPDO
         return $this->pdo;
     }
 
-    public function lastInsertId($db_sequence_name)
+    public function lastInsertId($db_sequence_name = null)
     {
         return $this->pdo()->lastInsertId($db_sequence_name);
     }

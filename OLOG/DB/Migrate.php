@@ -64,8 +64,10 @@ class Migrate {
             throw new \Exception('Migrations file "' . $filename . '" not found');
         }
 
-        // TODO: must open file from current project root
-        $sql_file_str = file_get_contents($filename); // TODO: errors check
+        $sql_file_str = file_get_contents($filename);
+        if ($sql_file_str === false){
+            throw new \Exception('File "' . $filename . '" read failed.');
+        }
 
         $sql_arr = preg_split('/\R/', $sql_file_str, -1, PREG_SPLIT_NO_EMPTY );
 
@@ -102,8 +104,9 @@ class Migrate {
 
         $filename = self::migrationsFileName($space_id);
 
-        // TODO: check errors
-        file_put_contents($filename, implode("\n", $sql_arr));
+        if (file_put_contents($filename, implode("\n", $sql_arr)) === false){
+            throw new \Exception('File "' . $filename . '" put failed.');
+        }
     }
 
 }

@@ -63,7 +63,7 @@ class DB
         return $statement_obj->fetch(\PDO::FETCH_COLUMN);
     }
 
-    static public function lastInsertId($space_id, $db_sequence_name)
+    static public function lastInsertId($space_id, $db_sequence_name = null)
     {
         $space = DBConfig::space($space_id);
         return $space->lastInsertId($db_sequence_name);

@@ -2,7 +2,7 @@
 
 namespace OLOG\DB;
 
-class ConnectorPostgresSQL extends ConnectorPDO implements ConnectorInterface
+class ConnectorPostgresSQL extends ConnectorPDO
 {
     public function query(string $query, $params_arr = array()): \PDOStatement
     {
