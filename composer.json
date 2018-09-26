@@ -2,7 +2,7 @@
   "name": "o-log/php-db",
   "description": "DB",
   "bin": [
-    "bin/migrate"
+    "bin/migrate.php"
   ],
   "require-dev": {
     "phpunit/phpunit": "5.5.*",
